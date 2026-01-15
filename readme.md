@@ -1,97 +1,86 @@
-# ⛪ Família Cristo Salva - Web Platform
+⛪ Família Cristo Salva - Web Platform
+Uma plataforma web de alta performance desenvolvida para a Igreja Família Cristo Salva. O projeto foca em entregar uma experiência premium, resiliente e escalável.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
-[![Neon](https://img.shields.io/badge/Database-Neon-00E599.svg)](https://neon.tech/)
+🚀 Racional Tecnológico: Por que estas ferramentas?
+Como arquiteto do projeto, a seleção da stack foi baseada em três pilares: Custo Zero de Operação, Performance Extrema e Manutenibilidade.
 
-Uma plataforma web de alta performance desenvolvida para a **Igreja Família Cristo Salva**. O projeto foca em entregar uma experiência premium, acessível e resiliente, integrando conteúdos ao vivo e biblioteca de mensagens.
+React 19 & Vite: Escolhidos pela nova gestão nativa de metadados e pela velocidade de compilação. O uso de Suspense e Lazy Loading garante que o bundle inicial seja mínimo, priorizando o Time to Interactive.
 
----
+Neon DB (PostgreSQL Serverless): A escolha pelo Neon deve-se ao seu modelo autoscaling e à capacidade de "dormir" quando não há tráfego, eliminando custos de infraestrutura enquanto mantém a robustez do PostgreSQL.
 
-## 🚀 Visão Geral e Desafios Técnicos
+YouTube Data API v3 + Cache Layer: Para mitigar o limite severo de 10.000 unidades de cota/dia, implementamos um sistema onde o frontend consome nosso banco de dados, reduzindo as chamadas à API do Google de milhares para apenas uma por dia.
 
-O maior desafio técnico deste projeto foi a gestão de cotas da **YouTube Data API v3**. Para garantir que o site suporte milhares de acessos diários sem interromper a exibição de vídeos devido ao limite de 10k unidades/dia do Google, implementamos uma **Arquitetura de Cache de Dados em Camadas**.
+TanStack Query (React Query): Utilizado para gerenciar o estado assíncrono, garantindo que os dados persistidos no banco sejam cacheados no navegador do usuário, reduzindo latência.
 
+💎 Melhores Práticas Adotadas
+O projeto segue rigorosos padrões de desenvolvimento sênior:
 
+SOLID & Clean Code: Componentes pequenos, com responsabilidade única e propriedades tipadas.
 
-### Diferenciais da Solução:
-* **Persistência com Neon DB:** Em vez de chamadas diretas à API pelo cliente, os metadados dos vídeos são persistidos em um banco PostgreSQL Serverless.
-* **Sincronização Automatizada:** Um serviço via GitHub Actions atualiza o banco de dados uma vez ao dia (Custo de cota: ~1 unidade), tornando o sistema imune a picos de tráfego.
-* **Performance "Above the Fold":** Uso estratégico de `lazy loading` e `Suspense` para garantir que a Hero Section carregue em menos de 1s (LCP otimizado).
-* **Modern UI/UX:** Interface construída com princípios de *Glassmorphism* sutil e animações via Framer Motion.
+Estratégia Anti-CLS (Cumulative Layout Shift): Implementação de Skeleton Screens personalizados que reservam o espaço exato das seções carregadas via lazy, garantindo nota máxima no Google PageSpeed.
 
----
+Segurança e Acessibilidade: - Uso de rel="noopener noreferrer" em todos os links externos.
 
-## 🛠️ Stack Tecnológica
+Atributos ARIA e discernible text para garantir navegação por leitores de tela.
 
-- **Frontend:** React 19 (Suporte nativo a metadados)
-- **Framework de Estilo:** Tailwind CSS & Shadcn/UI
-- **Gerenciamento de Estado/Fetch:** TanStack Query (React Query) v5
-- **Banco de Dados:** Neon (PostgreSQL)
-- **Ícones:** Lucide React
-- **Animações:** Framer Motion
+Variáveis de ambiente (.env) estritamente protegidas.
 
----
+UI/UX de Alto Nível: Design baseado em Glassmorphism, utilizando backdrop-filter para profundidade visual e animações aceleradas por GPU via Framer Motion.
 
-## 🏗️ Estrutura de Pastas
+🏗️ Estrutura de Pastas
+Plaintext
 
-```text
 src/
-├── assets/          # Ativos estáticos (Imagens/Vídeos)
+├── assets/          # Ativos otimizados (WebP, SVGs)
 ├── components/      
-│   ├── layout/      # Componentes globais (Header, Footer)
-│   ├── ui/          # Componentes base (Botões, Inputs via Shadcn)
-│   └── home/        # Seções específicas da Index
-├── hooks/           # Lógica de consumo de APIs e Cache
-├── pages/           # Rotas da aplicação (Lazy Loaded)
-├── services/        # Scripts de sincronização e integração DB
-└── lib/             # Configurações de bibliotecas (Prisma, Axios)
+│   ├── layout/      # Estrutura global (Header, Footer, Layout Wrapper)
+│   ├── ui/          # Design System base (Shadcn/UI otimizado)
+│   └── home/        # Seções modulares da Index (Lazy Ready)
+├── hooks/           # Hooks customizados para lógica de cache/status
+├── pages/           # Rotas da aplicação (Code Splitting ativo)
+├── services/        # Lógica de sincronização YouTube -> Neon
+└── lib/             # Configurações de terceiros (Prisma, Axios config)
 ⚙️ Configuração do Ambiente
 Pré-requisitos
 Node.js 20+
 
-Conta no Neon.tech
+Neon Account para banco de dados PostgreSQL.
 
-Chave de API do Google Cloud (YouTube Data API v3)
+Google Cloud Console com YouTube Data API v3 ativada.
 
-Passo a Passo
-Clone o repositório:
+Instalação
+Clone o projeto:
 
 Bash
 
-git clone [https://github.com/seu-usuario/familia-cristo-salva.git](https://github.com/seu-usuario/familia-cristo-salva.git)
+git clone https://github.com/seu-usuario/familia-cristo-salva.git
 cd familia-cristo-salva
-Instale as dependências:
+Dependências:
 
 Bash
 
 npm install
-Configure as Variáveis de Ambiente: Crie um arquivo .env na raiz do projeto:
+Variáveis de Ambiente: Crie um .env seguindo o modelo:
 
 Snippet de código
 
-DATABASE_URL="sua_string_de_conexao_do_neon"
-YOUTUBE_API_KEY="sua_chave_api_google"
-YOUTUBE_CHANNEL_ID="id_do_canal_da_igreja"
-Inicie o ambiente de desenvolvimento:
+DATABASE_URL="postgres://user:password@neon-host/dbname"
+YOUTUBE_API_KEY="AIzaSy..."
+Run:
 
 Bash
 
 npm run dev
 🤖 Automação de Dados (CI/CD)
-O projeto utiliza GitHub Actions para manter os dados atualizados sem custo operacional. O workflow está configurado em .github/workflows/sync.yml e realiza as seguintes tarefas:
+Utilizamos GitHub Actions (.github/workflows/sync.yml) para automação de infraestrutura:
 
-Acorda o banco de dados Neon.
+Cron Job: Sincroniza os vídeos diariamente às 03:00 AM.
 
-Consulta a API do YouTube para novos envios.
+Atomic Upsert: Garante que novos vídeos entrem no banco sem duplicar registros existentes.
 
-Realiza o upsert dos dados (evitando duplicidade).
-
-Garante que o Front-end sempre tenha dados "quentes".
-
-⚖️ Licença
-Distribuído sob a licença MIT. Veja LICENSE para mais informações.
+Auto-Wakeup: O script "acorda" o banco Neon apenas durante a tarefa de sync.
 
 🤝 Contato
-Iago - [Seu Link de Contato/LinkedIn] Projeto: https://familiacristosalva.com.br
+Iago - https://www.linkedin.com/in/munhoz-iago
+
+Ponto de verificação final: Esta documentação reflete uma arquitetura pronta para produção, focada em resolver gargalos de API e oferecer uma experiência de usuário impecável.
