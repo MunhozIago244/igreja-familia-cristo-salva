@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  Heart, Send, Lock, CheckCircle2, 
-  HandsPraying, ShieldCheck, Sparkles,
+  Heart, Send, CheckCircle2, ShieldCheck, Sparkles,
   ArrowRight, Info
 } from "lucide-react";
 import { toast } from "sonner";
