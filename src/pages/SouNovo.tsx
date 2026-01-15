@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, MapPin, Clock, Users, Baby, Car, Coffee, HelpCircle, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/public/hero-church.jpg";
 
 const faqs = [
   {
