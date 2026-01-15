@@ -1,0 +1,111 @@
+/* 1. IMPORTS PRIMEIRO (Sempre no topo do arquivo) */
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 2. DEFINIÇÃO DO TEMA (Para o Tailwind reconhecer suas variáveis) */
+@theme {
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/* 3. VARIÁVEIS DE CORES E BASES */
+@layer base {
+  :root {
+    --primary: 0 56% 23%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 30% 88%;
+    --secondary-foreground: 0 56% 23%;
+    --background: 30 20% 98%; 
+    --foreground: 0 0% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+    --muted: 20 10% 94%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 56% 96%;
+    --accent-foreground: 0 56% 23%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 89%;
+    --input: 0 0% 89%;
+    --ring: 0 56% 23%;
+    --radius: 0.75rem;
+
+    --gradient-hero: linear-gradient(135deg, hsl(0 56% 23%) 0%, hsl(0 65% 15%) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(0 56% 23%) 0%, hsl(42 45% 65%) 100%);
+    --shadow-soft: 0 4px 20px -4px hsl(0 56% 10% / 0.1);
+    --shadow-medium: 0 8px 30px -8px hsl(0 56% 10% / 0.15);
+  }
+
+  .dark {
+    --primary: 0 50% 45%;
+    --background: 0 0% 7%;
+    --foreground: 30 10% 95%;
+    --border: 0 0% 18%;
+  }
+
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    @apply font-semibold tracking-tight;
+  }
+}
+
+/* 4. SEUS COMPONENTES ORIGINAIS */
+@layer components {
+  .container-church { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .section-padding { @apply py-16 md:py-24; }
+  .text-gradient { @apply bg-clip-text text-transparent; background-image: var(--gradient-hero); }
+  .text-gradient-warm { @apply bg-clip-text text-transparent; background-image: var(--gradient-warm); }
+  .card-church {
+    @apply bg-card rounded-2xl p-6 transition-all duration-300;
+    box-shadow: var(--shadow-soft);
+  }
+  .card-church:hover { box-shadow: var(--shadow-medium); }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply hover:opacity-90 hover:scale-105 active:scale-100;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply hover:opacity-90 hover:scale-105 active:scale-100;
+  }
+  .btn-outline {
+    @apply border-2 border-primary text-primary px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply hover:bg-primary hover:text-primary-foreground;
+  }
+  .link-hover {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-current;
+    @apply after:transition-all after:duration-300 hover:after:w-full;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+  .animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+}

@@ -1,0 +1,27 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }  
+  ],
+  "compilerOptions": {
+    /* Solução para o Erro 1: Definir module explicitamente */
+    "module": "ESNext", 
+    "moduleResolution": "bundler",
+    
+    /* Solução para o Erro 2: Segurança entre SOs */
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    
+    "moduleDetection": "force",
+    "allowJs": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "noEmit": true
+  }
+}

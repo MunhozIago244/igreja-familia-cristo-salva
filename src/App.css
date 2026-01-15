@@ -1,0 +1,97 @@
+/**
+ * Arquitetura de Design System: Família Cristo Salva
+ * Foco: Resiliência de layout, Performance de renderização e Tokens dinâmicos.
+ */
+
+@layer base {
+  :root {
+    --container-church: 1280px;
+    --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Removido padding global para permitir seções Full-Width (Hero/Footer) */
+  /* A contenção agora é feita pelo componente .container-church */
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Utilitário de Contenção Padrão do Projeto */
+.container-church {
+  width: 100%;
+  max-width: var(--container-church);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Logos e Elementos de Branding */
+.logo {
+  height: 5rem;
+  will-change: transform, filter;
+  transition: 
+    transform 0.5s var(--transition-smooth),
+    filter 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05) translateY(-2px);
+  filter: drop-shadow(0 0 2rem hsl(var(--primary) / 0.3));
+}
+
+/* Cards com Glassmorphism (Assinatura Premium) */
+.card-premium {
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.1);
+  border-radius: var(--radius);
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.card-premium:hover {
+  border-color: hsl(var(--primary) / 0.4);
+  box-shadow: 0 20px 40px -20px hsl(var(--black) / 0.5);
+  transform: translateY(-4px);
+}
+
+/* Tipografia Estruturada */
+h1, .text-display {
+  font-family: var(--font-display); /* Supondo que você use uma fonte específica para títulos */
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Melhoria em Acessibilidade: Foco visível */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Otimização de Animações (GPU Accelerated) */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* Responsividade Adaptativa */
+@media (max-width: 768px) {
+  .container-church {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
