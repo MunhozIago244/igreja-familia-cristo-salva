@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import { Heart, Target, Eye, BookOpen, Users, Sparkles, Quote, ArrowDown } from "lucide-react";
-import ambosImage from "@/public/PR_1.jpg";
 
 const values = [
   {
@@ -215,7 +214,7 @@ const QuemSomos = () => {
               <div className="relative z-10 bg-white p-8 rounded-[3rem] shadow-xl text-center border border-slate-100 transition-transform group-hover:-translate-y-2">
                 <div className="relative inline-block mb-6">
                   <img
-                    src={ambosImage}
+                    src="/PR_1.jpg"
                     alt="Pastor e Pastora"
                     className="w-140 h-auto rounded-[2.5rem] object-fit mx-auto shadow-lg"
                   />
