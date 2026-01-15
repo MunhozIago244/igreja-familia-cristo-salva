@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { useLiveStatus } from "@/hooks/useLiveStatus";
 import { useSermonsList } from "@/hooks/useSermonsList";
-import worshipImage from "@/assets/worship.jpg";
+import worshipImage from "@/public/worship.jpg";
 
 const AoVivo = () => {
   // Removidas variáveis liveLoading e sermonsLoading que não estavam sendo lidas

@@ -1,6 +1,6 @@
 import { motion, Variants } from "framer-motion";
 import { Quote, Heart, Sparkles, Instagram } from "lucide-react";
-import pastorImage from "@/assets/pastor.jpg";
+import pastorImg from "@/public/pastor.jpg";
 
 const sectionVariants: Variants = {
   initial: { opacity: 0, y: 30 },
@@ -32,7 +32,7 @@ const PastorMessageSection = () => {
               {/* Aspect-ratio usando sintaxe canônica aspect-4/5 */}
               <div className="overflow-hidden rounded-[2.5rem] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] aspect-4/5 lg:aspect-4/5 bg-white">
                 <img
-                  src={pastorImage}
+                  src={pastorImg}
                   alt="Pr. Wesley Demarchi sorrindo em um ambiente acolhedor"
                   className="w-full h-full object-cover transition-all duration-1000 hover:scale-105"
                 />
