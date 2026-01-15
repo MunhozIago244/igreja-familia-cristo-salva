@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import { Heart, Target, Eye, BookOpen, Users, Sparkles, Quote, ArrowDown } from "lucide-react";
-import communityImage from "@/public/FM_1.jpg";
 import ambosImage from "@/public/PR_1.jpg";
 
 const values = [
@@ -84,7 +83,7 @@ const QuemSomos = () => {
             >
               <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl shadow-slate-200">
                 <img
-                  src={communityImage}
+                  src="/FM_1.jpg"
                   alt="Comunidade"
                   className="w-full h-[500px] object-cover"
                 />
