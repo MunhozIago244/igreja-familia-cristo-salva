@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Heart, HandHeart, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import communityImage from "@/public/ALUZ.jpg";
+import communityImage from "/ALUZ.jpg";
 
 const CTASection = () => {
   return (

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Play, Users, Church, Heart, ArrowRight } from "lucide-react";
 import { motion, Variants, Transition } from "framer-motion";
 import { useLiveStatus } from "@/hooks/useLiveStatus";
-import heroImage from "@/public/FAMILIA.jpg";
 
 const heroVariants: Variants = {
   initial: { opacity: 0, y: 30 },
@@ -26,7 +25,7 @@ const HeroSection = () => {
         <div className="absolute top-[-10%] left-[-10%] w-150 h-150 bg-primary/20 blur-[150px] rounded-full opacity-50" />
         
         <img
-          src={heroImage}
+          src="/FAMILIA.jpg"
           alt="Igreja Família Cristo Salva"
           // Corrigido: Removido style inline para usar classes Tailwind (Webhint)
           className="w-full h-full object-cover opacity-30 scale-105 contrast-110 brightness-50"

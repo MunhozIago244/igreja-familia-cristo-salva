@@ -1,6 +1,6 @@
 import { motion, Variants } from "framer-motion";
 import { Quote, Heart, Sparkles, Instagram } from "lucide-react";
-import pastorImg from "@/public/pastor.jpg";
+import pastorImg from "/pastor.jpg";
 
 const sectionVariants: Variants = {
   initial: { opacity: 0, y: 30 },

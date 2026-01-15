@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, MapPin, Clock, Users, Baby, Car, Coffee, HelpCircle, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-church.jpg";
+import heroImage from "@/public/hero-church.jpg";
 
 const faqs = [
   {
@@ -54,11 +54,6 @@ const SouNovo = () => {
       {/* Hero */}
       <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="Comunidade da igreja em adoração"
-            className="w-full h-full object-cover"
-          />
           <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 to-foreground/50" />
         </div>
         <div className="container-church relative z-10 pt-20 text-center">
