@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Users, Church, Heart, ArrowRight } from "lucide-react";
 import { motion, Variants, Transition } from "framer-motion";
 import { useLiveStatus } from "@/hooks/useLiveStatus";
-import heroImage from "@/assets/FAMILIA.jpg";
+import heroImage from "@/public/FAMILIA.jpg";
 
 const heroVariants: Variants = {
   initial: { opacity: 0, y: 30 },

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import { Heart, Target, Eye, BookOpen, Users, Sparkles, Quote, ArrowDown } from "lucide-react";
-import communityImage from "@/assets/FM_1.jpg";
-import ambosImage from "@/assets/PR_1.jpg";
+import communityImage from "@/public/FM_1.jpg";
+import ambosImage from "@/public/PR_1.jpg";
 
 const values = [
   {

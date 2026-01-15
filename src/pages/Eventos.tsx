@@ -6,7 +6,7 @@ import {
   Sparkles, ArrowRight, Star, Bell 
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import communityImage from "@/assets/community.jpg";
+import communityImage from "@/public/community.jpg";
 
 // Interface para garantir tipagem forte e evitar erros em produção
 interface SpecialEvent {
