@@ -28,6 +28,7 @@ const AoVivo = lazy(() => import("./pages/AoVivo"));
 // Novas Páginas Legais
 const Privacidade = lazy(() => import("./pages/Privacidade"));
 const Termos = lazy(() => import("./pages/Termos"));
+const Admin = lazy(() => import("./pages/Admin"));
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -84,6 +85,7 @@ const App = () => {
                 {/* Rotas Legais Adicionadas */}
                 <Route path="/privacidade" element={<Privacidade />} />
                 <Route path="/termos" element={<Termos />} />
+                <Route path="/admin" element={<Admin />} />
                 
                 {/* Rota 404 sempre ao final */}
                 <Route path="*" element={<NotFound />} />

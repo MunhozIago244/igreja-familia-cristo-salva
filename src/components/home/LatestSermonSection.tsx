@@ -5,7 +5,7 @@ import { useLatestSermon } from "@/hooks/useLatestSermon";
 
 const LatestSermonSection = () => {
   // Chamada do hook que consome a API real
-  const { data: sermon, loading } = useLatestSermon();
+  const { data: sermon, isLoading } = useLatestSermon();
 
   // Função para compartilhar
   const handleShare = () => {
@@ -28,7 +28,7 @@ const LatestSermonSection = () => {
 
       <div className="container-church relative z-10">
         <AnimatePresence mode="wait">
-          {loading ? (
+          {isLoading ? (
             <SermonSkeleton key="skeleton" />
           ) : sermon ? (
             <motion.div

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,11 @@ const CHURCH_CONTACT = {
 
 const Contato = () => {
   const [loading, setLoading] = useState(false);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState(""); // Novo campo
+  const [whatsapp, setWhatsapp] = useState(""); // Novo campo
+  const [mensagem, setMensagem] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false); // Novo estado para controlar a submissão
 
   // Lógica para verificar se está aberto (Simples mas funcional para UX)
   const isOpen = useMemo(() => {
@@ -28,32 +33,51 @@ const Contato = () => {
     const day = now.getDay(); // 0=Dom, 4=Qui, 6=Sab
     const hour = now.getHours();
     
-    if (day === 0 && (hour === 9 || hour === 19)) return true;
-    if (day === 4 && hour === 20) return true;
-    if (day === 6 && (hour === 11 || hour === 19)) return true;
+    // Supondo horários de culto como abertos
+    if (day === 0 && (hour === 9 || hour === 19)) return true; // Domingo 09h e 19h
+    if (day === 4 && hour === 20) return true; // Quinta 20h
+    if (day === 6 && (hour === 17 || hour === 19)) return true; // Sábado 17h e 19h (Ajustado)
     return false;
   }, []);
 
-  const handleWhatsAppSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleWhatsAppSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      nome: formData.get("nome"),
-      assunto: formData.get("assunto"),
-      mensagem: formData.get("mensagem")
+    const submission = {
+      nome,
+      email,
+      whatsapp,
+      mensagem,
+      date: new Date().toISOString(),
     };
 
-    // Formatação da mensagem para o WhatsApp
-    const text = `*Novo Contato via Site*\n\n*Nome:* ${data.nome}\n*Assunto:* ${data.assunto}\n*Mensagem:* ${data.mensagem}`;
-    const encodedText = encodeURIComponent(text);
-    
-    setTimeout(() => {
-      window.open(`https://wa.me/${CHURCH_CONTACT.phone}?text=${encodedText}`, "_blank");
-      toast.success("Redirecionando para o WhatsApp...");
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submission),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save contact submission.');
+      }
+
+      toast.success("Seu contato foi salvo! Entraremos em contato em breve para conversarmos.");
+      setIsSubmitted(true);
+      setNome("");
+      setEmail("");
+      setWhatsapp("");
+      setMensagem("");
+
+    } catch (error) {
+      console.error("Failed to save contact submission:", error);
+      toast.error("Ocorreu um erro ao salvar seu contato. Tente novamente.");
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -168,53 +192,113 @@ const Contato = () => {
                 </h2>
                 <p className="text-white/40 font-medium mb-12">Preencha os campos abaixo e entraremos em contato o mais rápido possível.</p>
 
-                <form onSubmit={handleWhatsAppSubmit} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Nome Completo</label>
-                      <Input
-                        name="nome"
-                        placeholder="Como podemos te chamar?"
-                        className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 transition-all px-6"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Assunto</label>
-                      <Input
-                        name="assunto"
-                        placeholder="Ex: Pedido de Oração"
-                        className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 transition-all px-6"
-                        required
-                      />
-                    </div>
-                  </div>
+                <AnimatePresence mode="wait">
+                  {!isSubmitted ? (
+                    <motion.div
+                      key="form"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                    >
+                      <form onSubmit={handleWhatsAppSubmit} className="space-y-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <label htmlFor="nome" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Nome Completo</label>
+                            <Input
+                              id="nome"
+                              name="nome"
+                              placeholder="Como podemos te chamar?"
+                              className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 transition-all px-6"
+                              required
+                              value={nome}
+                              onChange={(e) => setNome(e.target.value)}
+                            />
+                          </div>
+                          <div className="space-y-3">
+                            <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">E-mail</label>
+                            <Input
+                              id="email"
+                              name="email"
+                              type="email"
+                              placeholder="Seu melhor e-mail"
+                              className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 transition-all px-6"
+                              required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                            />
+                          </div>
+                        </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Sua Mensagem</label>
-                    <Textarea
-                      name="mensagem"
-                      placeholder="Sinta-se à vontade para escrever..."
-                      className="bg-white/5 border-white/10 min-h-[220px] rounded-[2.5rem] text-white focus:ring-primary/20 transition-all p-8 resize-none"
-                      required
-                    />
-                  </div>
+                        <div className="space-y-3">
+                          <label htmlFor="whatsapp" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">WhatsApp</label>
+                          <Input
+                            id="whatsapp"
+                            name="whatsapp"
+                            type="tel"
+                            placeholder="Seu número de WhatsApp com DDD"
+                            className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 transition-all px-6"
+                            required
+                            value={whatsapp}
+                            onChange={(e) => setWhatsapp(e.target.value)}
+                          />
+                        </div>
 
-                  <Button 
-                    type="submit" 
-                    disabled={loading}
-                    className="w-full rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-xs tracking-[0.3em] h-20 shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 group"
-                  >
-                    {loading ? "PROCESSANDO..." : "ENVIAR PARA O WHATSAPP"}
-                    {!loading && <Send size={18} className="group-hover:translate-x-1 transition-transform" />}
-                  </Button>
-                </form>
+                        <div className="space-y-3">
+                          <label htmlFor="mensagem" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Sua Mensagem</label>
+                          <Textarea
+                            id="mensagem"
+                            name="mensagem"
+                            placeholder="Sinta-se à vontade para escrever..."
+                            className="bg-white/5 border-white/10 min-h-[220px] rounded-[2.5rem] text-white focus:ring-primary/20 transition-all p-8 resize-none"
+                            required
+                            value={mensagem}
+                            onChange={(e) => setMensagem(e.target.value)}
+                          />
+                        </div>
+
+                        <Button 
+                          type="submit" 
+                          disabled={loading}
+                          className="w-full rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-xs tracking-[0.3em] h-20 shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 group"
+                        >
+                          {loading ? "PROCESSANDO..." : "ENVIAR MENSAGEM"}
+                          {!loading && <Send size={18} className="group-hover:translate-x-1 transition-transform" />}
+                        </Button>
+                      </form>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="text-center"
+                    >
+                      <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-6" />
+                      <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
+                        Obrigado pelo seu contato!
+                      </h2>
+                      <p className="text-white/60 mb-8">
+                        Recebemos sua mensagem e entraremos em contato em breve para conversarmos.
+                      </p>
+                      <Button 
+                        variant="ghost" 
+                        className="text-primary hover:bg-primary/10"
+                        onClick={() => setIsSubmitted(false)}
+                      >
+                        Enviar outra mensagem
+                      </Button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
-              {/* Elemento Decorativo */}
-              <div className="absolute -bottom-20 -right-20 text-white/2 pointer-events-none select-none">
-                <MessageCircle size={400} />
-              </div>
+              {/* Elemento Decorativo (agora dentro do !isSubmitted para não sobrepor a mensagem de sucesso) */}
+              {!isSubmitted && (
+                <div className="absolute -bottom-20 -right-20 text-white/2 pointer-events-none select-none">
+                  <MessageCircle size={400} />
+                </div>
+              )}
             </motion.div>
           </div>
         </div>

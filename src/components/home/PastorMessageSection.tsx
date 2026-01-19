@@ -43,8 +43,8 @@ const PastorMessageSection = () => {
                 <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
                   <Quote className="w-6 h-6 text-white fill-current" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-1">Ministério</span>
-                <span className="text-2xl font-display font-black text-foreground tracking-tighter">Desde 2014</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-1">Igreja</span>
+                <span className="text-2xl font-display font-black text-gray-800 tracking-tighter">Desde 2014</span>
               </div>
             </div>
           </motion.div>

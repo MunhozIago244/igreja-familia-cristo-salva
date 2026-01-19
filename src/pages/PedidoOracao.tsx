@@ -14,17 +14,42 @@ import { toast } from "sonner";
 const PedidoOracao = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [name, setName] = useState("");
+  const [request, setRequest] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulação de delay para transição suave (UX Sênior)
     const toastId = toast.loading("Enviando seu clamor aos céus...");
-    
-    setTimeout(() => {
+
+    const prayerRequest = {
+      name: isAnonymous ? "Anônimo" : name,
+      request,
+      isAnonymous,
+      date: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch('/api/prayer-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prayerRequest),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save prayer request.');
+      }
+
       setIsSubmitted(true);
       toast.success("Recebido! Estaremos em oração por você.", { id: toastId });
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 1500);
+      setName("");
+      setRequest("");
+    } catch (error) {
+      toast.error("Ocorreu um erro ao salvar seu pedido.", { id: toastId });
+      console.error("Failed to save prayer request:", error);
+    }
   };
 
   return (
@@ -85,6 +110,8 @@ const PedidoOracao = () => {
                             placeholder="Seu nome (ou apelido)"
                             className="bg-white/5 border-white/10 h-16 rounded-2xl text-white focus:ring-primary/20 px-6"
                             required={!isAnonymous}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                           />
                         </div>
                       </div>
@@ -95,6 +122,8 @@ const PedidoOracao = () => {
                           placeholder="Compartilhe seu coração conosco... Deus já conhece sua necessidade."
                           className="bg-white/5 border-white/10 min-h-[200px] rounded-[2.5rem] text-white focus:ring-primary/20 p-8 resize-none text-lg"
                           required
+                          value={request}
+                          onChange={(e) => setRequest(e.target.value)}
                         />
                       </div>
 

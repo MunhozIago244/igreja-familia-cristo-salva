@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, MapPin, Clock, Users, Baby, Car, Coffee, HelpCircle, CheckCircle } from "lucide-react";
+import { Heart, MapPin, Clock, Users, Baby, Car, Coffee, HelpCircle, CheckCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const faqs = [
   {
@@ -48,6 +50,45 @@ const whatToExpect = [
 ];
 
 const SouNovo = () => {
+  const [name, setName] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [email, setEmail] = useState(""); // Novo estado para o email
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const toastId = toast.loading("Enviando suas informações...");
+
+    const submission = {
+      name,
+      whatsapp,
+      email, // Incluir email na submissão
+      date: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch('/api/new-person', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submission),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save new person submission.');
+      }
+
+      toast.success("Recebido! Em breve entraremos em contato.", { id: toastId });
+      setName("");
+      setWhatsapp("");
+      setIsSubmitted(true);
+    } catch (error) {
+      toast.error("Ocorreu um erro ao salvar suas informações.", { id: toastId });
+      console.error("Failed to save new person submission:", error);
+    }
+  };
+
   return (
     <Layout>
       {/* Hero */}
@@ -246,39 +287,87 @@ const SouNovo = () => {
       <section className="section-padding bg-primary text-primary-foreground">
         <div className="container-church">
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
-                Planejando sua Visita?
-              </h2>
-              <p className="text-primary-foreground/80 mb-8">
-                Deixe seu contato que entraremos em contato para responder suas dúvidas!
-              </p>
-              <form className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+            <AnimatePresence mode="wait">
+            {!isSubmitted ? (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="max-w-2xl mx-auto text-center"
+              >
+                <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
+                  Planejando sua Visita?
+                </h2>
+                <p className="text-primary-foreground/80 mb-8">
+                  Deixe seu contato que entraremos em contato para responder suas dúvidas!
+                </p>
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Input
+                      placeholder="Seu nome"
+                      className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 rounded-xl"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                    <Input
+                      type="tel"
+                      placeholder="Seu WhatsApp"
+                      className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 rounded-xl"
+                      value={whatsapp}
+                      onChange={(e) => setWhatsapp(e.target.value)}
+                      required
+                    />
+                  </div>
                   <Input
-                    placeholder="Seu nome"
+                    type="email" // Alterado para tipo email
+                    placeholder="Seu E-mail"
                     className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 rounded-xl"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
-                  <Input
-                    type="tel"
-                    placeholder="Seu WhatsApp"
-                    className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 rounded-xl"
-                  />
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    size="lg"
+                    className="w-full bg-secondary text-secondary-foreground hover:opacity-90"
+                  >
+                    Quero ser Contatado
+                  </Button>
+                </form>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="max-w-2xl mx-auto text-center"
+              >
+                <CheckCircle className="w-16 h-16 text-secondary mx-auto mb-6" />
+                <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
+                  Obrigado!
+                </h2>
+                <p className="text-primary-foreground/80 mb-8">
+                  Em breve um de nossos líderes entrará em contato com você.
+                </p>
+                <div className="flex justify-center gap-4">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="bg-secondary text-secondary-foreground hover:opacity-90"
+                    asChild
+                  >
+                    <Link to="/ministerios">
+                      Conheça nossos Ministérios <ArrowRight className="ml-2" />
+                    </Link>
+                  </Button>
                 </div>
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  size="lg"
-                  className="w-full bg-secondary text-secondary-foreground hover:opacity-90"
-                >
-                  Quero ser Contatado
-                </Button>
-              </form>
-            </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           </div>
         </div>
       </section>

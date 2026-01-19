@@ -13,9 +13,20 @@ import worshipImage from "/worship.jpg";
 
 const AoVivo = () => {
   // Removidas variáveis liveLoading e sermonsLoading que não estavam sendo lidas
-  const { isLive, liveUrl, liveTitle } = useLiveStatus();
-  const { sermons } = useSermonsList(1); 
-  const latestSermon = sermons[0];
+  const { data: liveStatus, isLoading: isLiveLoading } = useLiveStatus();
+  const { data: sermons, isLoading: sermonsLoading } = useSermonsList();
+  const { isLive, liveUrl, liveTitle } = liveStatus || {};
+  const latestSermon = sermons?.[0];
+
+  if (isLiveLoading || sermonsLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-white">Carregando...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

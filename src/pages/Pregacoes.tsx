@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Play, Calendar, Search, Youtube, Share2, ArrowUpRight } from "lucide-react";
 // Correção do erro 2307: Importando o tipo explicitamente para resolver o erro de declaração
-import { useSermonsList, type Sermon } from "../hooks/useSermonsList"; 
+import { useSermonsList } from "@/hooks/useSermonsList";
+import type { Sermon } from "@/types/Sermon"; 
 
 const Pregacoes = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { sermons, loading } = useSermonsList(12);
+  const { data: sermons, isLoading } = useSermonsList();
 
   // Correção do erro 7006: Tipando explicitamente o parâmetro 'sermon'
-  const filteredSermons = sermons.filter((sermon: Sermon) =>
+  const filteredSermons = (sermons || []).filter((sermon: Sermon) =>
     sermon.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -59,7 +60,7 @@ const Pregacoes = () => {
       <section className="pb-32 bg-white">
         <div className="container-church">
           <AnimatePresence mode="wait">
-            {loading ? (
+            {isLoading ? (
               <SermonGridSkeleton />
             ) : (
               <>

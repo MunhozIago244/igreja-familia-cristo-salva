@@ -28,10 +28,9 @@ const QuemSomos = () => {
     <Layout>
       {/* 1. HERO SECTION - Minimalista e Impactante */}
       <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-white pt-20">
-        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-primary rounded-full blur-[120px]" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-[120px]" />
-        </div>
+        <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none bg-gradient-to-br from-white via-white/50 to-white" />
+        <div className="absolute top-20 left-10 w-96 h-96 bg-primary rounded-full blur-[120px]" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-[120px]" />
 
         <div className="container-church relative z-10">
           <motion.div
@@ -101,8 +100,8 @@ const QuemSomos = () => {
               viewport={{ once: true }}
             >
               <div className="w-12 h-1 bg-primary" />
-              <h2 className="font-display text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-tight">
-                Nossa história começou <span className="text-primary text-3xl block md:inline md:text-5xl">com um chamado.</span>
+              <h2 className="font-display text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-tight">
+                Nossa história começou <span className="text-primary text-3xl block md:inline md:text-6xl">com um chamado.</span>
               </h2>
               <div className="space-y-6 text-slate-500 text-lg leading-relaxed">
                 <p>
